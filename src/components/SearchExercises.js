@@ -10,9 +10,13 @@ const SearchExercises = ({ setExercises, bodyPart, setBodyPart }) => {
 
   useEffect(() => {
     const fetchExercisesData = async () => {
-      const bodyPartsData = await fetchData('https://exercisedb.p.rapidapi.com/exercises/bodyPartList', exerciseOptions);
-
-      setBodyParts(['all', ...bodyPartsData]);
+      try {
+        const bodyPartsData = await fetchData('https://exercisedb.p.rapidapi.com/exercises/bodyPartList', exerciseOptions);
+        setBodyParts(['all', ...bodyPartsData]);
+        console.log(bodyPartsData);
+      } catch (error) {
+        console.error('Error fetching body parts data:', error);
+      }
     };
 
     fetchExercisesData();
@@ -20,19 +24,29 @@ const SearchExercises = ({ setExercises, bodyPart, setBodyPart }) => {
 
   const handleSearch = async () => {
     if (search) {
-      const exercisesData = await fetchData('https://exercisedb.p.rapidapi.com/exercises', exerciseOptions);
+      try {
+        const exercisesData = await fetchData('https://exercisedb.p.rapidapi.com/exercises', exerciseOptions);
+        console.log(exercisesData);
+        console.log(exerciseOptions);
+        if (Array.isArray(exercisesData)) {
+          const searchedExercises = exercisesData.filter(
+            (item) => item.name.toLowerCase().includes(search)
+                   || item.target.toLowerCase().includes(search)
+                   || item.equipment.toLowerCase().includes(search)
+                   || item.bodyPart.toLowerCase().includes(search),
+          );
+          
+          window.scrollTo({ top: 1800, left: 100, behavior: 'smooth' });
 
-      const searchedExercises = exercisesData.filter(
-        (item) => item.name.toLowerCase().includes(search)
-               || item.target.toLowerCase().includes(search)
-               || item.equipment.toLowerCase().includes(search)
-               || item.bodyPart.toLowerCase().includes(search),
-      );
-
-      window.scrollTo({ top: 1800, left: 100, behavior: 'smooth' });
-
-      setSearch('');
-      setExercises(searchedExercises);
+          setSearch('');
+          setExercises(searchedExercises);
+          console.log(searchedExercises);
+        } else {
+          console.error('Fetched exercises data is not an array:', exercisesData);
+        }
+      } catch (error) {
+        console.error('Error fetching exercises data:', error);
+      }
     }
   };
 
