@@ -1,7 +1,4 @@
-// src/components/FavoriteExercises.js
 import React, { useEffect, useState, useContext } from 'react';
-import axios from '../axiosConfig';
-import AuthContext from '../contexts/AuthContext';
 import ExerciseCard from './ExerciseCard';
 
 const FavoriteExercises = () => {

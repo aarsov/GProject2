@@ -1,27 +1,22 @@
-// src/App.js
 import React from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import Home from './pages/Home';
-import ExerciseDetail from './pages/ExerciseDetail';
-import Login from './components/logIn';
-import Register from './components/register';
-import FavoriteExercises from './components/FavoriteExercises';
-import { AuthProvider } from './contexts/AuthContext';
+import { Route, Routes } from 'react-router-dom';
+import { Box } from '@mui/material';
 
-const App = () => {
-    return (
-        <AuthProvider>
-            <Router>
-                <Switch>
-                    <Route path="/" exact component={Home} />
-                    <Route path="/exercise/:id" component={ExerciseDetail} />
-                    <Route path="/login" component={Login} />
-                    <Route path="/register" component={Register} />
-                    <Route path="/favorites" component={FavoriteExercises} />
-                </Switch>
-            </Router>
-        </AuthProvider>
-    );
-};
+import './App.css';
+import ExerciseDetail from './pages/ExerciseDetail';
+import Home from './pages/Home';
+import Navbar from './components/Navbar';
+import Footer from './components/Footer';
+
+const App = () => (
+  <Box width="400px" sx={{ width: { xl: '1488px' } }} m="auto">
+    <Navbar />
+    <Routes>
+      <Route path="/" element={<Home />} />
+      <Route path="/exercise/:id" element={<ExerciseDetail />} />
+    </Routes>
+    <Footer />
+  </Box>
+);
 
 export default App;
